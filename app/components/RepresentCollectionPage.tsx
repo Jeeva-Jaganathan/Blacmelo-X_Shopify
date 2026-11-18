@@ -1,0 +1,997 @@
+import { useEffect, useRef, useState, useMemo, useCallback } from 'react';
+import { Link, useNavigate, useSearchParams } from 'react-router';
+import { Image, Money, Pagination } from '@shopify/hydrogen';
+import { getGenderFeaturedImage, getGenderHoverImage } from '~/lib/productExclusivity';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
+import { scrollToTop, getLenisInstance } from '~/lib/lenis';
+import { sortSizeLabels } from '~/lib/sortSizes';
+type ProductCardProduct = any;
+import { Slider } from '~/components/ui/slider';
+import { Plus } from 'lucide-react';
+import { AddToCartButton } from '~/components/AddToCartButton';
+
+// Import banner images for conditional hero
+import ss26Banner from '~/assets/final_banners/spring_summer.jpeg';
+import archiveBanner from '~/assets/final_banners/bl_archive.jpeg';
+import originalsBanner from '~/assets/final_banners/bl_originals.jpeg';
+import tshirtBanner from '~/assets/final_banners/tshirt banner.PNG';
+
+// Import final banners for fallback
+import fallBack1 from '~/assets/final_banners/spring_summer.jpeg';
+import fallBack2 from '~/assets/final_banners/the_signature_jacket_desktop.jpeg';
+import fallBack3 from '~/assets/final_banners/bl_originals.jpeg';
+import fallBack4 from '~/assets/final_banners/bl_archive.jpeg';
+
+const FALLBACK_BANNERS = [fallBack1, fallBack2, fallBack3, fallBack4];
+
+const COLOR_HEX_MAP: { [key: string]: string } = {
+  white: '#FFFFFF',
+  black: '#000000',
+  grey: '#808080',
+  gray: '#808080',
+  brown: '#8B4513',
+  cream: '#FFFDD0',
+  blue: '#0000FF',
+  green: '#008000',
+  pink: '#FFC0CB',
+  yellow: '#FFFF00',
+  red: '#FF0000',
+  navy: '#000080',
+  beige: '#F5F5DC',
+  ivory: '#FFFFF0',
+  sand: '#C2B280',
+  khaki: '#F0E68C',
+  olive: '#808000',
+  maroon: '#800000',
+  purple: '#800080',
+  orange: '#FFA500',
+  charcoal: '#36454F',
+  silver: '#C0C0C0',
+  gold: '#FFD700',
+  tan: '#D2B48C',
+  camel: '#C19A6B',
+  stone: '#877F7D',
+};
+
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger);
+}
+
+interface RepresentCollectionPageProps {
+  collection: {
+    id: string;
+    handle: string;
+    title: string;
+    description?: string | null;
+    image?: {
+      url: string;
+      altText?: string | null;
+    } | null;
+    products: {
+      nodes: ProductCardProduct[];
+      pageInfo: {
+        hasPreviousPage: boolean;
+        hasNextPage: boolean;
+        startCursor?: string | null;
+        endCursor?: string | null;
+      };
+    };
+  };
+  hideHero?: boolean;
+  hideInfo?: boolean;
+  genderContext?: 'men' | 'women' | null;
+}
+
+// Grid Icon
+function GridIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="2" y="2" width="5" height="5" stroke="currentColor" strokeWidth="1.5" />
+      <rect x="9" y="2" width="5" height="5" stroke="currentColor" strokeWidth="1.5" />
+      <rect x="2" y="9" width="5" height="5" stroke="currentColor" strokeWidth="1.5" />
+      <rect x="9" y="9" width="5" height="5" stroke="currentColor" strokeWidth="1.5" />
+    </svg>
+  );
+}
+
+// List Icon
+function ListIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M2 4H14M2 8H14M2 12H14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+// Filter Icon
+function FilterIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M2 4H14M4 8H12M6 12H10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+export function RepresentCollectionPage({ 
+  collection, 
+  hideHero = false,
+  hideInfo = false,
+  genderContext = null
+}: RepresentCollectionPageProps) {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const activeGenderContext = useMemo(() => {
+    if (genderContext) return genderContext;
+    const urlGender = searchParams.get('gender')?.toLowerCase();
+    if (urlGender === 'men' || urlGender === 'women') {
+      return urlGender as 'men' | 'women';
+    }
+    return null;
+  }, [genderContext, searchParams]);
+
+  // Gender display toggle — changes which model photo is shown, NEVER hides products
+  const handleGenderToggle = (gender: 'men' | 'women' | null) => {
+    const newParams = new URLSearchParams(searchParams);
+    if (gender === null || activeGenderContext === gender) {
+      newParams.delete('gender');
+    } else {
+      newParams.set('gender', gender);
+    }
+    setSearchParams(newParams, { preventScrollReset: true, replace: true });
+  };
+
+  const gridRef = useRef<HTMLDivElement>(null);
+  const [isClient, setIsClient] = useState(false);
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [showModel, setShowModel] = useState(false);
+  const [filterOpen, setFilterOpen] = useState(false);
+
+  // Filter states
+  const [sortBy, setSortBy] = useState<string>('latest');
+  const [priceRangeOpen, setPriceRangeOpen] = useState(false);
+  const [categoryOpen, setCategoryOpen] = useState(false);
+  const [sizeOpen, setSizeOpen] = useState(false);
+  const [coloursOpen, setColoursOpen] = useState(false);
+  const [collectionOpen, setCollectionOpen] = useState(false);
+
+  const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
+  const [selectedColours, setSelectedColours] = useState<string[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [selectedCollections, setSelectedCollections] = useState<string[]>([]);
+  const [priceRange, setPriceRange] = useState<{ min: number; max: number }>({ min: 0, max: 1930 });
+
+  // Prevent body scroll when filter is open
+  useEffect(() => {
+    const lenis = getLenisInstance();
+
+    if (filterOpen) {
+      // Stop Lenis smooth scroll
+      if (lenis) {
+        lenis.stop();
+      }
+      // Prevent body scroll
+      document.body.style.overflow = 'hidden';
+    } else {
+      // Restart Lenis smooth scroll
+      if (lenis) {
+        lenis.start();
+      }
+      // Restore body scroll
+      document.body.style.overflow = '';
+    }
+
+    return () => {
+      // Cleanup: restore scroll on unmount
+      if (lenis) {
+        lenis.start();
+      }
+      document.body.style.overflow = '';
+    };
+  }, [filterOpen]);
+
+  // Extract dynamic filters from all products
+  const dynamicFilterData = useMemo(() => {
+    const products = collection.products.nodes;
+
+    const categories = new Set<string>();
+    const colors = new Set<string>();
+    const vendors = new Set<string>();
+    const sizes = {
+      Tops: new Set<string>(),
+      Bottoms: new Set<string>(),
+      Denim: new Set<string>(),
+      Footwear: new Set<string>(),
+      Accessories: new Set<string>(),
+    };
+
+    products.forEach(product => {
+      // Categories from productType
+      if (product.productType) categories.add(product.productType);
+
+      // Vendor/Collection
+      if (product.vendor) vendors.add(product.vendor);
+
+      // Extract colors and sizes from variants
+      product.variants?.nodes?.forEach((variant: any) => {
+        variant.selectedOptions.forEach((option: any) => {
+          const name = option.name.toLowerCase();
+          const value = option.value;
+
+          if (name === 'color' || name === 'colour') {
+            colors.add(value);
+          }
+
+          if (name === 'size') {
+            const type = product.productType?.toLowerCase() || '';
+            if (type.includes('pant') || type.includes('short')) {
+              sizes.Bottoms.add(value);
+            } else if (type.includes('denim') || type.includes('jeans')) {
+              sizes.Denim.add(value);
+            } else if (type.includes('shoe') || type.includes('footwear')) {
+              sizes.Footwear.add(value);
+            } else if (type.includes('accessory') || type.includes('socks') || type.includes('cap') || type.includes('hat')) {
+              sizes.Accessories.add(value);
+            } else {
+              sizes.Tops.add(value);
+            }
+          }
+        });
+      });
+    });
+
+    return {
+      categories: Array.from(categories).sort(),
+      colors: Array.from(colors).sort(),
+      vendors: Array.from(vendors).sort(),
+      sizes: {
+        all: sizes,
+        Tops: Array.from(sizes.Tops).sort(),
+        Bottoms: Array.from(sizes.Bottoms).sort(),
+        Denim: Array.from(sizes.Denim).sort(),
+        Footwear: Array.from(sizes.Footwear).sort(),
+        Accessories: Array.from(sizes.Accessories).sort(),
+      }
+    };
+  }, [collection.products.nodes]);
+
+  // Filter and sort products
+  const getFilteredAndSortedProducts = (products: ProductCardProduct[]) => {
+    let filtered = [...products];
+
+    // Filter by price range
+    filtered = filtered.filter(product => {
+      const price = parseFloat(product.priceRange?.minVariantPrice?.amount || '0');
+      return price >= priceRange.min && price <= priceRange.max;
+    });
+
+    // Filter by category
+    if (selectedCategories.length > 0) {
+      filtered = filtered.filter(product => {
+        return selectedCategories.includes(product.productType || '');
+      });
+    }
+
+    // Filter by size
+    if (selectedSizes.length > 0) {
+      filtered = filtered.filter(product => {
+        const productSizes = product.variants?.nodes?.map((v: any) =>
+          v.selectedOptions?.find((opt: any) => opt.name.toLowerCase() === 'size')?.value
+        ).filter(Boolean) || [];
+        return selectedSizes.some(size => productSizes.includes(size));
+      });
+    }
+
+    // Filter by colour
+    if (selectedColours.length > 0) {
+      filtered = filtered.filter(product => {
+        const productColours = product.variants?.nodes?.map((v: any) =>
+          v.selectedOptions?.find((opt: any) => opt.name.toLowerCase() === 'color' || opt.name.toLowerCase() === 'colour')?.value
+        ).filter(Boolean) || [];
+        return selectedColours.some(colour =>
+          productColours.some((pc: any) => pc?.toLowerCase().includes(colour.toLowerCase()))
+        );
+      });
+    }
+
+    // Filter by collection (vendor)
+    if (selectedCollections.length > 0) {
+      filtered = filtered.filter(product => {
+        return selectedCollections.includes(product.vendor || '');
+      });
+    }
+
+    // Sort products
+    switch (sortBy) {
+      case 'price-high':
+        filtered.sort((a, b) => {
+          const priceA = parseFloat(a.priceRange?.minVariantPrice?.amount || '0');
+          const priceB = parseFloat(b.priceRange?.minVariantPrice?.amount || '0');
+          return priceB - priceA;
+        });
+        break;
+      case 'price-low':
+        filtered.sort((a, b) => {
+          const priceA = parseFloat(a.priceRange?.minVariantPrice?.amount || '0');
+          const priceB = parseFloat(b.priceRange?.minVariantPrice?.amount || '0');
+          return priceA - priceB;
+        });
+        break;
+      case 'popular':
+        // For now, keep original order (you can add popularity logic later)
+        break;
+      case 'latest':
+      default:
+        // Keep original order (assuming products are already sorted by latest)
+        break;
+    }
+
+    return filtered;
+  };
+
+  // Reset scroll position when component mounts
+  useEffect(() => {
+    scrollToTop(true);
+    setIsClient(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isClient || !gridRef.current) return;
+
+    const cards = gridRef.current.querySelectorAll('.represent-product-card');
+
+    gsap.fromTo(
+      cards,
+      { opacity: 0, y: 30 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        stagger: 0.1,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: gridRef.current,
+          start: 'top 80%',
+        },
+      }
+    );
+
+    return () => {
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    };
+  }, [isClient, collection.products.nodes]);
+
+  // Get all products for filtering (including pagination)
+  const allProducts = collection.products.nodes;
+  const totalProductCount = allProducts.length;
+  const filteredProducts = getFilteredAndSortedProducts(allProducts);
+  const productCount = filteredProducts.length;
+  const isFiltered = productCount < totalProductCount;
+
+  // Count active filters
+  const activeFilterCount = selectedSizes.length + selectedColours.length + selectedCategories.length + selectedCollections.length + (sortBy !== 'latest' ? 1 : 0);
+
+  return (
+    <div className="represent-collection-page">
+      {/* 1. Clean Hero Banner with Video */}
+      {!hideHero && (
+        <header className="represent-hero">
+          {isClient && (
+            (() => {
+              const handle = collection.handle.toLowerCase();
+              let displayImage = null;
+
+              if (handle === 'tshirts' || handle.includes('tshirt') || handle.includes('w-tops')) {
+                displayImage = tshirtBanner;
+              } else if (handle.includes('spring-summer')) {
+                displayImage = ss26Banner;
+              } else if (handle.includes('archive')) {
+                displayImage = archiveBanner;
+              } else if (handle.includes('originals')) {
+                displayImage = originalsBanner;
+              }
+
+              if (displayImage) {
+                const handleLower = handle.toLowerCase();
+                const heroClass = (handleLower === 'tshirts' || handleLower.includes('tshirt') || handleLower.includes('w-tops')) ? 'tshirt-hero' :
+                  (handleLower.includes('spring-summer') || handleLower.includes('ss26')) ? 'ss26-hero' :
+                  handleLower.includes('archive') ? 'archive-hero' :
+                    (handleLower.includes('blacmelo') || handleLower.includes('originals')) ? 'originals-hero' : '';
+                return (
+                  <img
+                    src={displayImage}
+                    alt={collection.title}
+                    className={`represent-hero-image ${heroClass}`}
+                  />
+                );
+              }
+
+              // Fallback: Pick a stable "random" image from FALLBACK_BANNERS based on handle
+              const hash = handle.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+              const fallbackIndex = hash % FALLBACK_BANNERS.length;
+              const fallbackImage = FALLBACK_BANNERS[fallbackIndex];
+
+              return (
+                <img
+                  src={fallbackImage}
+                  alt={collection.title}
+                  className={`represent-hero-image fallback-hero fallback-hero-${fallbackIndex + 1}`}
+                />
+              );
+            })()
+          )}
+        </header>
+      )}
+
+      {/* 2. Collection Info Bar */}
+      {!hideInfo && (
+        <div className="represent-collection-info">
+          <h1 className="represent-collection-title">{collection.title}</h1>
+          <span className="represent-product-count">
+            {isFiltered ? `${productCount} of ${totalProductCount}` : totalProductCount}
+          </span>
+        </div>
+      )}
+
+      {/* 3. Controls Bar - View Toggle, Model Toggle, Gender Toggle, Filter */}
+      <nav className="represent-controls-bar">
+        <div className="represent-controls-left">
+          {/* View Toggle */}
+          <div className="represent-view-toggle">
+            <button
+              className={`represent-view-btn ${viewMode === 'grid' ? 'active' : ''}`}
+              onClick={() => setViewMode('grid')}
+              aria-label="Grid view"
+            >
+              <GridIcon />
+            </button>
+            <button
+              className={`represent-view-btn ${viewMode === 'list' ? 'active' : ''}`}
+              onClick={() => setViewMode('list')}
+              aria-label="List view"
+            >
+              <ListIcon />
+            </button>
+          </div>
+
+          {/* Model Toggle */}
+          <button
+            className={`represent-model-toggle ${showModel ? 'active' : ''}`}
+            onClick={() => setShowModel(!showModel)}
+          >
+            Model
+          </button>
+
+          {/* Gender Photo Toggle — switches which model photos appear on cards.
+               This is purely a display preference; it NEVER hides products. */}
+          <div className="represent-gender-toggle" aria-label="Model photo preference">
+            <button
+              className={`represent-gender-btn ${activeGenderContext === 'men' ? 'active' : ''}`}
+              onClick={() => handleGenderToggle('men')}
+              title="Show men's model photos"
+            >
+              Men
+            </button>
+            <button
+              className={`represent-gender-btn ${activeGenderContext === 'women' ? 'active' : ''}`}
+              onClick={() => handleGenderToggle('women')}
+              title="Show women's model photos"
+            >
+              Women
+            </button>
+          </div>
+        </div>
+
+        <div className="represent-controls-right">
+          <button
+            className="represent-filter-btn"
+            onClick={() => setFilterOpen(true)}
+          >
+            <span>Filter</span>
+            {activeFilterCount > 0 && (
+              <span className="filter-badge">{activeFilterCount}</span>
+            )}
+            <FilterIcon />
+          </button>
+        </div>
+      </nav>
+
+      {/* Filter Panel */}
+      {filterOpen && (
+        <div className="filter-overlay" onClick={() => setFilterOpen(false)}>
+          <div
+            className="filter-panel"
+            onClick={(e) => e.stopPropagation()}
+            onWheel={(e) => e.stopPropagation()}
+          >
+            {/* Header */}
+            <div className="filter-header">
+              <h3 className="filter-title">Filter</h3>
+              <button
+                className="filter-close"
+                onClick={() => setFilterOpen(false)}
+                aria-label="Close filter"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Filter Content */}
+            <div className="filter-content" data-lenis-prevent>
+              {/* Sort By */}
+              <div className="filter-section">
+                <h3 className="filter-section-title">Sort By</h3>
+                <div className="filter-options">
+                  <label className="filter-radio">
+                    <input
+                      type="radio"
+                      name="sort"
+                      value="latest"
+                      checked={sortBy === 'latest'}
+                      onChange={(e) => setSortBy(e.target.value)}
+                    />
+                    <span>Latest/Newest</span>
+                  </label>
+                  <label className="filter-radio">
+                    <input
+                      type="radio"
+                      name="sort"
+                      value="popular"
+                      checked={sortBy === 'popular'}
+                      onChange={(e) => setSortBy(e.target.value)}
+                    />
+                    <span>Most Popular</span>
+                  </label>
+                  <label className="filter-radio">
+                    <input
+                      type="radio"
+                      name="sort"
+                      value="price-high"
+                      checked={sortBy === 'price-high'}
+                      onChange={(e) => setSortBy(e.target.value)}
+                    />
+                    <span>Price: High to low</span>
+                  </label>
+                  <label className="filter-radio">
+                    <input
+                      type="radio"
+                      name="sort"
+                      value="price-low"
+                      checked={sortBy === 'price-low'}
+                      onChange={(e) => setSortBy(e.target.value)}
+                    />
+                    <span>Price: Low to high</span>
+                  </label>
+                </div>
+              </div>
+
+              {/* Price Range */}
+              <div className="filter-section filter-collapsible">
+                <button
+                  className="filter-section-header"
+                  onClick={() => setPriceRangeOpen(!priceRangeOpen)}
+                >
+                  <span>Price Range</span>
+                  <svg
+                    className={`filter-chevron ${priceRangeOpen ? 'open' : ''}`}
+                    width="12"
+                    height="12"
+                    viewBox="0 0 12 12"
+                    fill="none"
+                  >
+                    <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </button>
+                {priceRangeOpen && (
+                  <div className="filter-collapse-content">
+                    <div className="price-range-display">
+                      <span>${priceRange.min}</span>
+                      <span>${priceRange.max}</span>
+                    </div>
+                    <div className="price-range-slider-wrapper">
+                      <Slider
+                        value={[priceRange.min, priceRange.max]}
+                        onValueChange={(values) => {
+                          setPriceRange({ min: values[0], max: values[1] });
+                        }}
+                        min={0}
+                        max={1930}
+                        step={10}
+                        className="price-range-slider"
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Product Category */}
+              <div className="filter-section filter-collapsible">
+                <button
+                  className="filter-section-header"
+                  onClick={() => setCategoryOpen(!categoryOpen)}
+                >
+                  <span>Product Category</span>
+                  <svg
+                    className={`filter-chevron ${categoryOpen ? 'open' : ''}`}
+                    width="12"
+                    height="12"
+                    viewBox="0 0 12 12"
+                    fill="none"
+                  >
+                    <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </button>
+                {categoryOpen && (
+                  <div className="filter-collapse-content">
+                    <div className="filter-checkboxes">
+                      {dynamicFilterData.categories.map((category) => (
+                        <label key={category} className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            checked={selectedCategories.includes(category)}
+                            onChange={(e) => {
+                              if (e.target.checked) {
+                                setSelectedCategories([...selectedCategories, category]);
+                              } else {
+                                setSelectedCategories(selectedCategories.filter(c => c !== category));
+                              }
+                            }}
+                          />
+                          <span>{category}</span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Size */}
+              <div className="filter-section filter-collapsible">
+                <button
+                  className="filter-section-header"
+                  onClick={() => setSizeOpen(!sizeOpen)}
+                >
+                  <span>Size</span>
+                  <svg
+                    className={`filter-chevron ${sizeOpen ? 'open' : ''}`}
+                    width="12"
+                    height="12"
+                    viewBox="0 0 12 12"
+                    fill="none"
+                  >
+                    <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </button>
+                {sizeOpen && (
+                  <div className="filter-collapse-content">
+                    {/* Dynamic Sizes grouped by category */}
+                    {Object.entries(dynamicFilterData.sizes.all).map(([groupName, sizeSet]) => {
+                      const sizes = Array.from(sizeSet).sort();
+                      if (sizes.length === 0) return null;
+
+                      return (
+                        <div key={groupName} className="size-category">
+                          <h4 className="size-category-title">{groupName}</h4>
+                          <div className="size-grid">
+                            {sizes.map((size) => (
+                              <button
+                                key={`${groupName}-${size}`}
+                                className={`size-button ${selectedSizes.includes(size) ? 'active' : ''}`}
+                                onClick={() => {
+                                  if (selectedSizes.includes(size)) {
+                                    setSelectedSizes(selectedSizes.filter(s => s !== size));
+                                  } else {
+                                    setSelectedSizes([...selectedSizes, size]);
+                                  }
+                                }}
+                              >
+                                {size}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+
+              {/* Colours */}
+              <div className="filter-section filter-collapsible">
+                <button
+                  className="filter-section-header"
+                  onClick={() => setColoursOpen(!coloursOpen)}
+                >
+                  <span>Colours</span>
+                  <svg
+                    className={`filter-chevron ${coloursOpen ? 'open' : ''}`}
+                    width="12"
+                    height="12"
+                    viewBox="0 0 12 12"
+                    fill="none"
+                  >
+                    <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </button>
+                {coloursOpen && (
+                  <div className="filter-collapse-content">
+                    <div className="color-grid">
+                      {dynamicFilterData.colors.map((colorName) => {
+                        const hexValue = COLOR_HEX_MAP[colorName.toLowerCase()] || '#EEEEEE';
+                        return (
+                          <label key={colorName} className="color-option">
+                            <input
+                              type="checkbox"
+                              checked={selectedColours.includes(colorName)}
+                              onChange={(e) => {
+                                if (e.target.checked) {
+                                  setSelectedColours([...selectedColours, colorName]);
+                                } else {
+                                  setSelectedColours(selectedColours.filter(c => c !== colorName));
+                                }
+                              }}
+                            />
+                            <span className="color-swatch" style={{ background: hexValue }}></span>
+                            <span className="color-name">{colorName}</span>
+                          </label>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Brand (filters by vendor/brand name) */}
+              <div className="filter-section filter-collapsible">
+                <button
+                  className="filter-section-header"
+                  onClick={() => setCollectionOpen(!collectionOpen)}
+                >
+                  <span>Brand</span>
+                  <svg
+                    className={`filter-chevron ${collectionOpen ? 'open' : ''}`}
+                    width="12"
+                    height="12"
+                    viewBox="0 0 12 12"
+                    fill="none"
+                  >
+                    <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </button>
+                {collectionOpen && (
+                  <div className="filter-collapse-content">
+                    <div className="filter-checkboxes">
+                      {dynamicFilterData.vendors.map((vendor) => (
+                        <label key={vendor} className="filter-checkbox">
+                          <input
+                            type="checkbox"
+                            checked={selectedCollections.includes(vendor)}
+                            onChange={(e) => {
+                              if (e.target.checked) {
+                                setSelectedCollections([...selectedCollections, vendor]);
+                              } else {
+                                setSelectedCollections(selectedCollections.filter(c => c !== vendor));
+                              }
+                            }}
+                          />
+                          <span>{vendor}</span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Footer Buttons */}
+            <div className="filter-footer">
+              <button
+                className="filter-clear-btn"
+                onClick={() => {
+                  setSortBy('latest');
+                  setSelectedSizes([]);
+                  setSelectedColours([]);
+                  setSelectedCategories([]);
+                  setSelectedCollections([]);
+                  setPriceRange({ min: 0, max: 1930 });
+                }}
+              >
+                CLEAR SELECTION
+              </button>
+              <button
+                className="filter-apply-btn"
+                onClick={() => setFilterOpen(false)}
+              >
+                APPLY
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 4. Product Grid */}
+      <Pagination connection={collection.products}>
+        {({ nodes, isLoading, NextLink, hasNextPage }) => {
+          const filteredProducts = getFilteredAndSortedProducts(nodes);
+
+          return (
+            <>
+              <main ref={gridRef} className={`represent-product-grid ${viewMode === 'list' ? 'list-view' : ''}`}>
+                {filteredProducts.length > 0 ? (
+                  filteredProducts.map((product) => (
+                    <RepresentProductCard key={product.id} product={product} viewMode={viewMode} genderContext={activeGenderContext} />
+                  ))
+                ) : (
+                  <div className="no-products-message">
+                    <p>No products match your filters. Try adjusting your selection.</p>
+                  </div>
+                )}
+              </main>
+
+              {/* Load More */}
+              {hasNextPage && (
+                <div className="represent-load-more">
+                  <NextLink className="represent-load-more-btn">
+                    {isLoading ? 'Loading...' : 'Load More'}
+                  </NextLink>
+                </div>
+              )}
+            </>
+          );
+        }}
+      </Pagination>
+    </div>
+  );
+}
+
+// Represent-style Product Card with Image Swap
+export function RepresentProductCard({ product, viewMode, genderContext }: { product: ProductCardProduct; viewMode: 'grid' | 'list'; genderContext?: 'men' | 'women' | null }) {
+  const [showSizes, setShowSizes] = useState(false);
+  const navigate = useNavigate();
+
+  const image1 = getGenderFeaturedImage(product, genderContext);
+  const image2 = getGenderHoverImage(product, genderContext);
+
+  // Get product variant info - extract color and size from options
+  const firstVariant = product.variants?.nodes?.[0];
+
+  // Get color value from first variant
+  const colorOption = firstVariant?.selectedOptions?.find(
+    (opt: { name: string; value: string }) => opt.name.toLowerCase() === 'color' || opt.name.toLowerCase() === 'colour'
+  );
+  const colorValue = colorOption?.value || '';
+
+  // Get proper color name from metafield if available
+  // Check multiple possible metafield locations with null safety
+  const colorMetafield = product.metafields?.filter(Boolean).find(
+    (m: any) => m && (m.key === 'color_name' || m.key === 'color' || m.key === 'Color') &&
+      (m.namespace === 'custom' || m.namespace === 'category' || m.namespace?.includes('tshirt'))
+  );
+  const displayColorName = colorMetafield?.value || colorValue;
+
+  // Count unique colors from variants
+  const uniqueColors = new Set(
+    product.variants?.nodes?.map((v: any) =>
+      v.selectedOptions?.find(
+        (opt: { name: string; value: string }) => opt.name.toLowerCase() === 'color' || opt.name.toLowerCase() === 'colour'
+      )?.value
+    ).filter(Boolean)
+  );
+  const colorCount = uniqueColors.size;
+  const hasMultipleColors = colorCount > 1;
+
+  return (
+    <div
+      onClick={() => navigate(`/products/${product.handle}${genderContext ? `?gender=${genderContext}` : ''}`)}
+      className="represent-product-card group cursor-pointer"
+      onMouseLeave={() => setShowSizes(false)}
+    >
+      <div className="represent-card-image-wrapper relative">
+        {/* Primary Image */}
+        {image1 && (
+          <Image
+            data={image1}
+            alt={image1.altText || product.title}
+            sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
+            loading="lazy"
+            className="represent-card-image represent-card-image-primary"
+          />
+        )}
+
+        {/* Secondary Image (Hover) */}
+        {image2 && (
+          <Image
+            data={image2}
+            alt={image2.altText || product.title}
+            sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
+            loading="lazy"
+            className="represent-card-image represent-card-image-secondary"
+          />
+        )}
+
+        {/* Quick Add Reveal Button (Mobile Only) */}
+        <button
+          className={`md:hidden absolute bottom-2 right-2 w-8 h-8 flex items-center justify-center border border-black/10 bg-white/90 backdrop-blur-sm text-black shadow-sm transition-all duration-300 z-10 ${showSizes ? 'opacity-0 pointer-events-none scale-90' : 'opacity-100 scale-100'
+            }`}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            setShowSizes(true);
+          }}
+        >
+          <Plus size={16} />
+        </button>
+
+        {/* Sizes Grid (Revealed on hover for Desktop, or when + clicked on Mobile) */}
+        <div
+          className={`absolute bottom-3 left-0 right-0 flex flex-wrap gap-1.5 justify-center px-2 transition-all duration-300 z-20
+            opacity-0 pointer-events-none translate-y-2 
+            md:group-hover:opacity-100 md:group-hover:pointer-events-auto md:group-hover:translate-y-0
+            ${showSizes ? '!opacity-100 !pointer-events-auto !translate-y-0' : ''}
+          `}
+          onClick={(e) => e.stopPropagation()}
+        >
+          {(() => {
+            const rawSizes = (product.variants?.nodes || []).map((v: any) => {
+              const sizeOption = v.selectedOptions?.find((o: any) => o.name.toLowerCase() === 'size');
+              if (!sizeOption) return null;
+              return { label: sizeOption.value, available: v.availableForSale ?? true, variantId: v.id };
+            }).filter(Boolean) as Array<{ label: string; available: boolean; variantId: string }>;
+
+            const sortedSizes = sortSizeLabels(rawSizes);
+
+            return sortedSizes.map((sizeEntry) => (
+              <AddToCartButton
+                key={sizeEntry.variantId}
+                disabled={!sizeEntry.available}
+                lines={[{ merchandiseId: sizeEntry.variantId, quantity: 1 }]}
+                className={`text-[10px] font-medium uppercase min-w-[28px] px-1.5 py-1 text-center border transition-all duration-200 ${!sizeEntry.available
+                  ? 'border-gray-200 text-gray-400 cursor-not-allowed bg-white/70 backdrop-blur-md'
+                  : 'border-transparent bg-white/95 backdrop-blur-md text-gray-500 hover:text-black hover:border-black hover:bg-white hover:scale-105 hover:font-bold cursor-pointer shadow-sm'
+                  }`}
+                onClick={(e) => e.stopPropagation()}
+              >
+                {sizeEntry.label === '2XL' ? 'XXL' : sizeEntry.label}
+              </AddToCartButton>
+            ));
+          })()}
+        </div>
+      </div>
+
+      <div className="represent-card-info">
+        {/* Row 1: Title (left) + Price (right) */}
+        <div className="represent-card-info-row">
+          <div className="represent-card-info-left">
+            <h3 className="represent-card-title">{product.title}</h3>
+          </div>
+          <div className="represent-card-info-right">
+            {product.priceRange?.minVariantPrice && (
+              <span className="represent-card-price">
+                {product.compareAtPriceRange?.minVariantPrice &&
+                  parseFloat(product.compareAtPriceRange.minVariantPrice.amount) >
+                    parseFloat(product.priceRange.minVariantPrice.amount) && (
+                  <span className="represent-card-price-original">
+                    <Money data={product.compareAtPriceRange.minVariantPrice} className="money" />
+                  </span>
+                )}
+                <Money data={product.priceRange.minVariantPrice} className="money" />
+              </span>
+            )}
+          </div>
+        </div>
+
+        {/* Row 2: Color (left) */}
+        <div className="represent-card-info-row represent-card-info-row-2">
+          <div className="represent-card-info-left">
+            {displayColorName && (
+              <p className="represent-card-variant">
+                {displayColorName}
+                {hasMultipleColors && <span className="represent-card-colors"> {colorCount} Colours</span>}
+              </p>
+            )}
+          </div>
+        </div>
+      </div>
+
+    </div>
+  );
+}

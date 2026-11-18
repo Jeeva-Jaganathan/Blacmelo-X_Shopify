@@ -1,0 +1,110 @@
+/* Parallax Menu - Scroll-based Positioning */
+.parallax-menu {
+  position: fixed;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 20;
+  will-change: top;
+  pointer-events: none;
+}
+
+/* Re-enable pointer events only on the content */
+.parallax-menu-content {
+  text-align: center;
+  color: #ffffff;
+  pointer-events: auto;
+}
+
+/* Top Label */
+.parallax-menu-label {
+  font-family: 'Neue Haas Grotesk', sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #ffffff;
+  margin: 0 0 24px 0;
+  opacity: 0.8;
+}
+
+/* Navigation Links Container */
+.parallax-menu-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 32px;
+}
+
+/* Collection Links */
+.parallax-menu-link {
+  font-family: var(--font-body);
+  font-size: clamp(24px, 4vw, 32px);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #ffffff;
+  text-decoration: none;
+  line-height: 1.2;
+  white-space: nowrap;
+  /* Opacity is driven by JS — smooth transition for the crossfade */
+  transition: opacity 0.35s ease, font-size 0.3s ease;
+  display: block;
+}
+
+/* Discover Button */
+.parallax-menu-discover {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Neue Haas Grotesk', sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #ffffff;
+  text-decoration: none;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  transition: border-color 0.2s ease;
+}
+
+.parallax-menu-discover:hover {
+  border-color: rgba(255, 255, 255, 0.6);
+}
+
+.parallax-menu-discover svg {
+  width: 14px;
+  height: 14px;
+  transition: transform 0.2s ease;
+}
+
+.parallax-menu-discover:hover svg {
+  transform: translateX(3px);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .parallax-menu-label {
+    font-size: 9px;
+    margin-bottom: 16px;
+  }
+
+  .parallax-menu-link {
+    font-size: clamp(14px, 7vw, 24px);
+  }
+
+  .parallax-menu-nav {
+    gap: 4px;
+    margin-bottom: 24px;
+  }
+
+  .parallax-menu-discover {
+    font-size: 10px;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .parallax-menu-link {
+    font-size: clamp(20px, 4vw, 28px);
+  }
+}

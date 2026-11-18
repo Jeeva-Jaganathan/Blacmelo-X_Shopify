@@ -1,0 +1,1079 @@
+/**
+ * BLACMELO Header - Layout and Styles
+ * Always transparent with white text and icons
+ */
+
+/* BLACMELO Header - Permanently Transparent with White Elements */
+.blacmelo-header {
+  width: 100%;
+  height: 63px;
+  padding-top: 28px;
+  /* Mobile: 63px per REPRESENT specs */
+  background: transparent !important;
+  border-bottom: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1002;
+  /* Above announcement bar (1001) */
+  margin: 0;
+  padding: 0;
+  transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Desktop: 46px height */
+@media (min-width: 1024px) {
+  .blacmelo-header {
+    height: 46px;
+  }
+}
+
+/* Remove scrolled state background */
+.blacmelo-header.header-scrolled {
+  background: transparent !important;
+  box-shadow: none;
+}
+
+/* Adjust header position when announcement bar is visible */
+body:has(.announcement-bar:not([hidden])) .blacmelo-header {
+  top: 64px;
+}
+
+/* Desktop: White background when menu is active */
+@media (min-width: 769px) {
+  .blacmelo-header.header-menu-active {
+    background: #ffffff !important;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+    z-index: 1002;
+    /* Above blur overlay (998) and menu panel (999) and announcement bar (1001) to remain clickable */
+  }
+}
+
+/* Mobile: Keep transparent when menu is active */
+@media (max-width: 768px) {
+  .blacmelo-header.header-menu-active {
+    background: transparent !important;
+  }
+}
+
+/* When hover menu is active, change header elements to black */
+.blacmelo-header.header-menu-active .blacmelo-header-link,
+.blacmelo-header.header-menu-active .blacmelo-header-icon,
+.blacmelo-header.header-menu-active .blacmelo-cart-icon,
+.blacmelo-header.header-menu-active .blacmelo-mobile-menu-btn {
+  color: #000000 !important;
+}
+
+/* Logo becomes black when menu is active */
+.blacmelo-header.header-menu-active .blacmelo-logo-image {
+  filter: none !important;
+}
+
+/* Underlines turn black when menu is active */
+.blacmelo-header.header-menu-active .blacmelo-header-link::after,
+.blacmelo-header.header-menu-active .blacmelo-header-icon::after,
+.blacmelo-header.header-menu-active .blacmelo-cart-icon::after {
+  background: #000000 !important;
+}
+
+/* Hover states remain black when menu is active */
+.blacmelo-header.header-menu-active .blacmelo-header-link:hover,
+.blacmelo-header.header-menu-active .blacmelo-header-icon:hover,
+.blacmelo-header.header-menu-active .blacmelo-cart-icon:hover {
+  color: #000000 !important;
+}
+
+/* Product Page Header - TRANSPARENT background with BLACK text */
+.blacmelo-header.header-product-page {
+  background: transparent !important;
+  box-shadow: none;
+}
+
+/* Product page header - WHITE when menu is active */
+@media (min-width: 769px) {
+  .blacmelo-header.header-product-page.header-menu-active {
+    background: #ffffff !important;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.08);
+  }
+}
+
+/* Product page header - BLACK text by default */
+.blacmelo-header.header-product-page .blacmelo-header-link,
+.blacmelo-header.header-product-page .blacmelo-header-icon,
+.blacmelo-header.header-product-page .blacmelo-cart-icon,
+.blacmelo-header.header-product-page .blacmelo-mobile-menu-btn,
+.blacmelo-header.header-product-page .blacmelo-mobile-search-btn {
+  color: #000000 !important;
+}
+
+/* Product page header - BLACK logo by default */
+.blacmelo-header.header-product-page .blacmelo-logo-image {
+  filter: none !important;
+}
+
+/* Product page header - BLACK underlines by default */
+.blacmelo-header.header-product-page .blacmelo-header-link::after,
+.blacmelo-header.header-product-page .blacmelo-header-icon::after,
+.blacmelo-header.header-product-page .blacmelo-cart-icon::after {
+  background: #000000 !important;
+}
+
+/* Product page header - turns WHITE when scrolled, elements stay black */
+.blacmelo-header.header-product-page.header-scrolled {
+  background: #ffffff !important;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.08);
+}
+
+/* Product page header - keep BLACK text when scrolled */
+.blacmelo-header.header-product-page.header-scrolled .blacmelo-header-link,
+.blacmelo-header.header-product-page.header-scrolled .blacmelo-header-icon,
+.blacmelo-header.header-product-page.header-scrolled .blacmelo-cart-icon,
+.blacmelo-header.header-product-page.header-scrolled .blacmelo-mobile-menu-btn,
+.blacmelo-header.header-product-page.header-scrolled .blacmelo-mobile-search-btn {
+  color: #000000 !important;
+}
+
+/* Product page header - hover states remain BLACK */
+.blacmelo-header.header-product-page .blacmelo-header-link:hover,
+.blacmelo-header.header-product-page .blacmelo-header-icon:hover,
+.blacmelo-header.header-product-page .blacmelo-cart-icon:hover {
+  color: #000000 !important;
+}
+
+.blacmelo-header.header-product-page.header-scrolled .blacmelo-header-link:hover,
+.blacmelo-header.header-product-page.header-scrolled .blacmelo-header-icon:hover,
+.blacmelo-header.header-product-page.header-scrolled .blacmelo-cart-icon:hover {
+  color: #000000 !important;
+}
+
+/* ── White Header for utility / content pages ── */
+.blacmelo-header.header-white-page {
+  background: #ffffff !important;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.08);
+}
+
+.blacmelo-header.header-white-page.header-scrolled {
+  background: #ffffff !important;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.08);
+}
+
+/* Black text for links, icons, buttons */
+.blacmelo-header.header-white-page .blacmelo-header-link,
+.blacmelo-header.header-white-page .blacmelo-header-icon,
+.blacmelo-header.header-white-page .blacmelo-cart-icon,
+.blacmelo-header.header-white-page .blacmelo-mobile-menu-btn,
+.blacmelo-header.header-white-page .blacmelo-mobile-search-btn {
+  color: #000000 !important;
+}
+
+/* Black underlines */
+.blacmelo-header.header-white-page .blacmelo-header-link::after,
+.blacmelo-header.header-white-page .blacmelo-header-icon::after,
+.blacmelo-header.header-white-page .blacmelo-cart-icon::after {
+  background: #000000 !important;
+}
+
+/* Hover stays black */
+.blacmelo-header.header-white-page .blacmelo-header-link:hover,
+.blacmelo-header.header-white-page .blacmelo-header-icon:hover,
+.blacmelo-header.header-white-page .blacmelo-cart-icon:hover,
+.blacmelo-header.header-white-page .blacmelo-mobile-menu-btn:hover {
+  color: #000000 !important;
+}
+
+/* Scrolled state keeps black text */
+.blacmelo-header.header-white-page.header-scrolled .blacmelo-header-link,
+.blacmelo-header.header-white-page.header-scrolled .blacmelo-header-icon,
+.blacmelo-header.header-white-page.header-scrolled .blacmelo-cart-icon,
+.blacmelo-header.header-white-page.header-scrolled .blacmelo-mobile-menu-btn {
+  color: #000000 !important;
+}
+
+.blacmelo-header.header-white-page.header-scrolled .blacmelo-header-link::after,
+.blacmelo-header.header-white-page.header-scrolled .blacmelo-header-icon::after,
+.blacmelo-header.header-white-page.header-scrolled .blacmelo-cart-icon::after {
+  background: #000000 !important;
+}
+
+.blacmelo-header.header-white-page.header-scrolled .blacmelo-header-link:hover,
+.blacmelo-header.header-white-page.header-scrolled .blacmelo-header-icon:hover,
+.blacmelo-header.header-white-page.header-scrolled .blacmelo-cart-icon:hover {
+  color: #000000 !important;
+}
+
+/* Lottie logo: disable blend mode so it renders normally on white bg */
+.blacmelo-header.header-white-page .blacmelo-lottie-logo-wrapper svg {
+  mix-blend-mode: normal;
+}
+
+/* Static logo (fallback): show as black */
+.blacmelo-header.header-white-page .blacmelo-logo-image {
+  filter: none !important;
+}
+
+.blacmelo-header.header-white-page.header-scrolled .blacmelo-logo-image {
+  filter: none !important;
+}
+
+/* Hover-menu trigger underlines */
+.blacmelo-header.header-white-page .hover-menu-trigger .blacmelo-header-link::after {
+  background: #000000 !important;
+}
+
+/* Cart badge on white header: invert to white on black */
+.blacmelo-header.header-white-page .blacmelo-cart-badge {
+  background: #000000;
+  color: #ffffff;
+}
+
+.blacmelo-header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+.blacmelo-header-left,
+.blacmelo-header-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex-shrink: 0;
+  height: 100%;
+}
+
+.blacmelo-header-left {
+  flex: 1;
+  justify-content: flex-start;
+  padding-left: 10px;
+  gap: 15px;
+}
+
+/* Desktop padding: 10px */
+@media (min-width: 1024px) {
+  .blacmelo-header-left {
+    padding-left: 10px;
+  }
+}
+
+.blacmelo-header-right {
+  flex: 1;
+  justify-content: flex-end;
+  padding-right: 24px;
+  /* 24px (px-6) on mobile */
+}
+
+/* Desktop padding: 32px (lg:px-8) */
+@media (min-width: 1024px) {
+  .blacmelo-header-right {
+    padding-right: 32px;
+  }
+}
+
+.blacmelo-header-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  /* Full header height so the Lottie animation has room to render.
+     Width auto-sizes to the 640:360 (≈1.78) aspect ratio at each height. */
+  height: 100%;
+  width: auto;
+  text-decoration: none;
+  overflow: hidden;
+}
+
+/* ------------------------------------------------------------------
+   Lottie logo wrapper
+   The animation canvas is 640×360 (16:9).  We size it relative to the
+   header height and let the Lottie SVG scale within the box.
+   ------------------------------------------------------------------ */
+.blacmelo-lottie-logo-wrapper {
+  /* Desktop: inherit the 46px header height; width maintains 1.78 ratio */
+  height: 46px;
+  width: 82px;
+  /* 46 × (640/360) ≈ 82 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  pointer-events: none;
+  /* let the wrapping <a> handle clicks */
+}
+
+/* Make the SVG fill the wrapper exactly */
+.blacmelo-lottie-logo-wrapper svg {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+  /*
+    mix-blend-mode: multiply removes the animation's solid white background
+    without any JS.  How it works:
+      white (1,1,1) × anything = that colour  → white bg disappears
+      black (0,0,0) × anything = (0,0,0)      → dark logo elements stay black
+    This keeps the logo visible over both light and dark page backgrounds.
+  */
+  mix-blend-mode: multiply;
+}
+
+/* When the hover-menu turns the header white, the blend mode isn't needed
+   (the white bg merges with the white header naturally) and we want full,
+   un-blended colours for maximum sharpness. */
+.blacmelo-header.header-menu-active .blacmelo-lottie-logo-wrapper svg {
+  mix-blend-mode: normal;
+}
+
+/* SSR placeholder keeps layout stable during hydration */
+.blacmelo-lottie-logo-ssr-placeholder {
+  display: block;
+  width: 82px;
+  height: 46px;
+}
+
+/* ------------------------------------------------------------------
+   Legacy .blacmelo-logo-image styles (kept in case any other page
+   still renders the static <img> logo directly).
+   ------------------------------------------------------------------ */
+.blacmelo-logo-image {
+  width: 106px;
+  height: 24px;
+  object-fit: contain;
+  display: block;
+  filter: brightness(0) invert(1);
+  transition: filter 0.3s ease;
+}
+
+.blacmelo-header.header-scrolled .blacmelo-logo-image {
+  filter: brightness(0) invert(1);
+}
+
+.blacmelo-header-link {
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: normal;
+  color: #ffffff;
+  /* White by default */
+  text-decoration: none;
+  transition: color 0.3s ease, opacity 0.3s ease;
+  flex-shrink: 0;
+  white-space: nowrap;
+  position: relative;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0;
+}
+
+/* Desktop: Keep text 12px */
+@media (min-width: 1024px) {
+  .blacmelo-header-link {
+    font-size: 12px;
+  }
+}
+
+/* Links stay white when scrolled */
+.blacmelo-header.header-scrolled .blacmelo-header-link {
+  color: #ffffff;
+}
+
+/* Underline that sits at the bottom of header */
+.blacmelo-header-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: #ffffff;
+  /* White underline by default */
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease;
+}
+
+/* Underline stays white when scrolled */
+.blacmelo-header.header-scrolled .blacmelo-header-link::after {
+  background: #ffffff;
+}
+
+.blacmelo-header-link.active::after {
+  transform: scaleX(1);
+}
+
+.blacmelo-header-link:hover {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+/* Hover color stays white when scrolled */
+.blacmelo-header.header-scrolled .blacmelo-header-link:hover {
+  color: #ffffff;
+}
+
+.blacmelo-header-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 100%;
+  flex-shrink: 0;
+  transition: color 0.3s ease, opacity 0.3s ease;
+  color: #ffffff;
+  /* White by default */
+  position: relative;
+}
+
+/* Icons stay white when scrolled */
+.blacmelo-header.header-scrolled .blacmelo-header-icon {
+  color: #ffffff;
+}
+
+/* Underline animation for icons */
+.blacmelo-header-icon::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: #ffffff;
+  /* White underline by default */
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease;
+}
+
+/* Underline stays white when scrolled */
+.blacmelo-header.header-scrolled .blacmelo-header-icon::after {
+  background: #ffffff;
+}
+
+.blacmelo-header-icon:hover::after {
+  transform: scaleX(1);
+}
+
+.blacmelo-header-icon:hover {
+  color: #ffffff;
+}
+
+/* Hover color stays white when scrolled */
+.blacmelo-header.header-scrolled .blacmelo-header-icon:hover {
+  color: #ffffff;
+}
+
+.blacmelo-header-icon svg {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+
+.blacmelo-icon-image {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  display: block;
+}
+
+/* Cart Icon - Same behavior as header icons */
+.blacmelo-cart-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 100%;
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: color 0.3s ease, opacity 0.3s ease;
+  color: #ffffff;
+  /* White by default */
+  position: relative;
+}
+
+/* Cart icon stays white when scrolled */
+.blacmelo-header.header-scrolled .blacmelo-cart-icon {
+  color: #ffffff;
+}
+
+/* Underline animation for cart icon */
+.blacmelo-cart-icon::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: #ffffff;
+  /* White underline by default */
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease;
+}
+
+/* Underline stays white when scrolled */
+.blacmelo-header.header-scrolled .blacmelo-cart-icon::after {
+  background: #ffffff;
+}
+
+.blacmelo-cart-icon:hover::after {
+  transform: scaleX(1);
+}
+
+.blacmelo-cart-icon:hover {
+  color: #ffffff;
+}
+
+/* Hover color stays white when scrolled */
+.blacmelo-header.header-scrolled .blacmelo-cart-icon:hover {
+  color: #ffffff;
+}
+
+.blacmelo-cart-icon svg {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+
+/* Cart Badge */
+.blacmelo-cart-badge {
+  position: absolute;
+  top: -4px;
+  right: -8px;
+  background: #000000;
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 600;
+  font-family: 'Neue Haas Grotesk', sans-serif;
+  min-width: 16px;
+  height: 16px;
+  border-radius: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  line-height: 1;
+  z-index: 2;
+}
+
+/* Mobile menu button (hidden on desktop) */
+.blacmelo-mobile-menu-btn,
+.blacmelo-mobile-search-btn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: #ffffff;
+  /* White by default */
+  transition: color 0.3s ease, opacity 0.3s ease;
+  position: relative;
+  width: 24px;
+  height: 24px;
+}
+
+/* Menu icon wrapper for transition */
+.menu-icon-wrapper {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Menu and close icons */
+.menu-icon,
+.close-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Default state: show menu icon */
+.blacmelo-mobile-menu-btn .menu-icon {
+  opacity: 1;
+  transform: translate(-50%, -50%) rotate(0deg);
+}
+
+.blacmelo-mobile-menu-btn .close-icon {
+  opacity: 0;
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+
+/* Open state: show close icon */
+.blacmelo-mobile-menu-btn.menu-open .menu-icon {
+  opacity: 0;
+  transform: translate(-50%, -50%) rotate(-90deg);
+}
+
+.blacmelo-mobile-menu-btn.menu-open .close-icon {
+  opacity: 1;
+  transform: translate(-50%, -50%) rotate(0deg);
+}
+
+/* Mobile buttons stay white when scrolled */
+.blacmelo-header.header-scrolled .blacmelo-mobile-menu-btn,
+.blacmelo-header.header-scrolled .blacmelo-mobile-search-btn {
+  color: #ffffff;
+}
+
+.blacmelo-mobile-menu-btn:hover,
+.blacmelo-mobile-search-btn:hover {
+  color: #ffffff;
+}
+
+/* Hover color stays white when scrolled */
+.blacmelo-header.header-scrolled .blacmelo-mobile-menu-btn:hover,
+.blacmelo-header.header-scrolled .blacmelo-mobile-search-btn:hover {
+  color: #ffffff;
+}
+
+/* Responsive - Tablet */
+@media (max-width: 1200px) {
+  .blacmelo-header-left {
+    padding-left: 10px;
+  }
+
+  .blacmelo-header-right {
+    padding-right: 10px;
+  }
+
+  .blacmelo-header-left,
+  .blacmelo-header-right {
+    gap: 24px;
+  }
+}
+
+/* Responsive - Mobile */
+@media (max-width: 768px) {
+  .blacmelo-header {
+    height: 63px;
+    /* Keep mobile height 63px */
+    background: transparent !important;
+  }
+
+  /* Keep transparent when scrolled on mobile */
+  .blacmelo-header.header-scrolled {
+    background: transparent !important;
+    box-shadow: none;
+  }
+
+  /* Keep transparent when both scrolled and menu active */
+  .blacmelo-header.header-scrolled.header-menu-active {
+    background: transparent !important;
+  }
+
+  /* Hide desktop navigation */
+  .blacmelo-header-left .blacmelo-header-link:not(.mobile-only),
+  .blacmelo-header-right .blacmelo-header-link:not(.mobile-only),
+  .blacmelo-header-left .hover-menu-trigger {
+    display: none;
+  }
+
+  /* Show mobile menu button (search removed) */
+  .blacmelo-mobile-menu-btn {
+    display: flex;
+    width: 24px;
+    height: 24px;
+    color: #ffffff;
+    /* White by default */
+  }
+
+  /* When mobile menu is open — white header like reference */
+  .blacmelo-header.mobile-menu-open {
+    background: #ffffff !important;
+    box-shadow: none;
+    /* Raise above the overlay (z-index 1100) so header remains visible */
+    z-index: 1200;
+  }
+
+  /* When mobile menu is open, turn button black */
+  .blacmelo-header.mobile-menu-open .blacmelo-mobile-menu-btn {
+    color: #000000 !important;
+  }
+
+  /* When mobile menu is open, turn all header elements black */
+  .blacmelo-header.mobile-menu-open .blacmelo-header-icon,
+  .blacmelo-header.mobile-menu-open .blacmelo-cart-icon {
+    color: #000000 !important;
+  }
+
+  /* Ensure logo also turns black if visible */
+  .blacmelo-header.mobile-menu-open .blacmelo-logo-image {
+    filter: none !important;
+  }
+
+  /* When mobile menu is open — header-right takes remaining width (for Man link on far right) */
+  .blacmelo-header.mobile-menu-open .blacmelo-header-right {
+    flex: 1;
+    justify-content: flex-end;
+  }
+
+  /* When mobile menu is open on white header pages, keep black */
+  .blacmelo-header.header-white-page.mobile-menu-open .blacmelo-mobile-menu-btn,
+  .blacmelo-header.header-white-page.mobile-menu-open .blacmelo-header-icon,
+  .blacmelo-header.header-white-page.mobile-menu-open .blacmelo-cart-icon {
+    color: #000000;
+  }
+
+  /* Mobile menu button stays white when scrolled */
+  .blacmelo-header.header-scrolled .blacmelo-mobile-menu-btn {
+    color: #ffffff;
+  }
+
+  .blacmelo-mobile-menu-btn:hover {
+    color: #ffffff;
+  }
+
+  /* Hover color stays white when scrolled */
+  .blacmelo-header.header-scrolled .blacmelo-mobile-menu-btn:hover {
+    color: #ffffff;
+  }
+
+  .blacmelo-mobile-search-btn {
+    display: none !important;
+    /* Hide search button on mobile */
+  }
+
+  .blacmelo-mobile-menu-btn svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  /* Mobile layout: Menu | Logo (centered) | User */
+  .blacmelo-header-left {
+    flex: 0 0 auto;
+    gap: 11px;
+    padding-left: 16px;
+    justify-content: flex-start;
+    width: auto;
+  }
+
+  .blacmelo-header-logo {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: auto;
+    height: auto;
+    justify-content: center;
+    flex: 0 0 auto;
+  }
+
+  /* Mobile Lottie logo: taller header (63px) → wider animation */
+  .blacmelo-lottie-logo-wrapper {
+    height: 53px;
+    width: 94px;
+    /* 53 × (640/360) ≈ 94 */
+  }
+
+  .blacmelo-lottie-logo-ssr-placeholder {
+    height: 53px;
+    width: 94px;
+  }
+
+  .blacmelo-logo-image {
+    width: auto;
+    height: 20px;
+    max-width: 120px;
+    filter: brightness(0) invert(1);
+    /* White logo by default on mobile */
+  }
+
+  /* Logo stays white when scrolled on mobile */
+  .blacmelo-header.header-scrolled .blacmelo-logo-image {
+    filter: brightness(0) invert(1);
+  }
+
+  .blacmelo-header-right {
+    flex: 0 0 auto;
+    gap: 16px;
+    padding-right: 16px;
+    justify-content: flex-end;
+    width: auto;
+  }
+
+  /* Ensure container uses space-between for proper centering */
+  .blacmelo-header-container {
+    position: relative;
+  }
+
+  .blacmelo-header-icon {
+    width: 24px;
+    height: 24px;
+    color: #ffffff;
+    /* White by default on mobile */
+    transition: color 0.3s ease;
+  }
+
+  /* Icons stay white when scrolled on mobile */
+  .blacmelo-header.header-scrolled .blacmelo-header-icon {
+    color: #ffffff;
+  }
+
+  .blacmelo-header-icon:hover {
+    color: #ffffff;
+  }
+
+  /* Hover color stays white when scrolled */
+  .blacmelo-header.header-scrolled .blacmelo-header-icon:hover {
+    color: #ffffff;
+  }
+
+  /* Cart icon on mobile - same behavior */
+  .blacmelo-cart-icon {
+    width: 24px;
+    height: 24px;
+    color: #ffffff;
+    /* White by default on mobile */
+    transition: color 0.3s ease;
+  }
+
+  /* Cart icon stays white when scrolled on mobile */
+  .blacmelo-header.header-scrolled .blacmelo-cart-icon {
+    color: #ffffff;
+  }
+
+  .blacmelo-cart-icon:hover {
+    color: #ffffff;
+  }
+
+  /* Hover color stays white when scrolled */
+  .blacmelo-header.header-scrolled .blacmelo-cart-icon:hover {
+    color: #ffffff;
+  }
+
+  /* ── White header pages on mobile ── */
+  .blacmelo-header.header-white-page {
+    background: #ffffff !important;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.08);
+  }
+
+  .blacmelo-header.header-white-page.header-scrolled {
+    background: #ffffff !important;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.08);
+  }
+
+  .blacmelo-header.header-white-page .blacmelo-mobile-menu-btn {
+    color: #000000 !important;
+  }
+
+  .blacmelo-header.header-white-page .blacmelo-header-icon {
+    color: #000000 !important;
+  }
+
+  .blacmelo-header.header-white-page .blacmelo-cart-icon {
+    color: #000000 !important;
+  }
+
+  .blacmelo-header.header-white-page .blacmelo-logo-image {
+    filter: none !important;
+  }
+
+  .blacmelo-header.header-white-page .blacmelo-lottie-logo-wrapper svg {
+    mix-blend-mode: normal;
+  }
+}
+
+/* Hover Menu Trigger */
+.hover-menu-trigger {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 0;
+}
+
+.hover-menu-trigger .blacmelo-header-link {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  /* Removed horizontal padding */
+  text-decoration: none !important;
+}
+
+.hover-menu-trigger .blacmelo-header-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: #ffffff;
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+
+.blacmelo-header.header-scrolled .hover-menu-trigger .blacmelo-header-link::after {
+  background: #ffffff;
+}
+
+.blacmelo-header.header-scrolled .hover-menu-trigger .blacmelo-header-link {
+  color: #ffffff;
+}
+
+.hover-menu-trigger:hover .blacmelo-header-link::after,
+.hover-menu-trigger .blacmelo-header-link.active::after {
+  transform: scaleX(1);
+}
+
+/* Blacmelo Club Link - Special styling */
+.header-blacmelo-club {
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: normal;
+  color: #ffffff;
+  text-decoration: none;
+  transition: color 0.3s ease, opacity 0.3s ease;
+  flex-shrink: 0;
+  white-space: nowrap;
+  position: relative;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0;
+}
+
+/* Underline for Blacmelo Club link */
+.header-blacmelo-club::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: #ffffff;
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease;
+}
+
+.header-blacmelo-club.active::after,
+.header-blacmelo-club:hover::after {
+  transform: scaleX(1);
+}
+
+.header-blacmelo-club:hover {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+/* Black text on product pages */
+.blacmelo-header.header-product-page .header-blacmelo-club {
+  color: #000000 !important;
+}
+
+.blacmelo-header.header-product-page .header-blacmelo-club::after {
+  background: #000000 !important;
+}
+
+.blacmelo-header.header-product-page .header-blacmelo-club:hover {
+  color: #000000 !important;
+}
+
+/* Black text on white pages */
+.blacmelo-header.header-white-page .header-blacmelo-club {
+  color: #000000 !important;
+}
+
+.blacmelo-header.header-white-page .header-blacmelo-club::after {
+  background: #000000 !important;
+}
+
+.blacmelo-header.header-white-page .header-blacmelo-club:hover {
+  color: #000000 !important;
+}
+
+/* Black text when menu is active */
+.blacmelo-header.header-menu-active .header-blacmelo-club {
+  color: #000000 !important;
+}
+
+.blacmelo-header.header-menu-active .header-blacmelo-club::after {
+  background: #000000 !important;
+}
+
+.blacmelo-header.header-menu-active .header-blacmelo-club:hover {
+  color: #000000 !important;
+}
+
+/* Hide on mobile */
+@media (max-width: 768px) {
+  .header-blacmelo-club {
+    display: none;
+  }
+}
+
+/* ============================================
+   RESPONSIVE UTILITY CLASSES
+   ============================================ */
+
+/* desktop-only: visible on desktop, hidden on mobile */
+.desktop-only {
+  display: none !important;
+}
+
+@media (min-width: 769px) {
+  .desktop-only {
+    display: flex !important;
+  }
+}
+
+/* mobile-only: visible on mobile, hidden on desktop */
+.mobile-only {
+  display: flex !important;
+}
+
+@media (min-width: 769px) {
+  .mobile-only {
+    display: none !important;
+  }
+}
+
+/* Mobile Man link — shown in header when mobile menu is open */
+.mobile-man-link {
+  font-family: 'Neue Haas Grotesk', sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #000000 !important;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  height: 24px;
+}
+
+/* Mobile header icon button — ensure proper sizing */
+.blacmelo-header.mobile-menu-open .blacmelo-header-left .blacmelo-header-icon.mobile-only {
+  color: #000000;
+  width: 24px;
+  height: 24px;
+}
+
+/* Mobile search button within left nav */
+.blacmelo-header-left button.blacmelo-header-icon {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

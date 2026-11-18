@@ -1,0 +1,138 @@
+/**
+ * BLACMELO Wishlist Page
+ */
+
+.wishlist-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 120px 40px 80px;
+  min-height: 100vh;
+}
+
+.wishlist-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.wishlist-title {
+  font-family: 'Neue Haas Grotesk', sans-serif;
+  font-size: 24px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.wishlist-count {
+  font-family: 'Neue Haas Grotesk', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: #666;
+}
+
+.wishlist-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.wishlist-item-wrapper {
+  position: relative;
+}
+
+.wishlist-remove-btn {
+  margin-top: 12px;
+  width: 100%;
+  padding: 10px;
+  background: transparent;
+  border: 1px solid #000;
+  font-family: 'Neue Haas Grotesk', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.wishlist-remove-btn:hover {
+  background: #000;
+  color: #fff;
+}
+
+.wishlist-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  text-align: center;
+}
+
+.wishlist-empty-text {
+  font-family: 'Neue Haas Grotesk', sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  color: #666;
+  margin-bottom: 24px;
+}
+
+.wishlist-continue-btn {
+  display: inline-block;
+  padding: 14px 32px;
+  background: #000;
+  color: #fff;
+  font-family: 'Neue Haas Grotesk', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.wishlist-continue-btn:hover {
+  background: #333;
+}
+
+@media (max-width: 1024px) {
+  .wishlist-container {
+    padding: 100px 20px 60px;
+  }
+
+  .wishlist-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 16px;
+  }
+
+  .wishlist-title {
+    font-size: 20px;
+  }
+
+  .wishlist-count {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .wishlist-container {
+    padding: 80px 16px 40px;
+  }
+
+  .wishlist-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .wishlist-header {
+    margin-bottom: 24px;
+  }
+
+  .wishlist-title {
+    font-size: 18px;
+  }
+}

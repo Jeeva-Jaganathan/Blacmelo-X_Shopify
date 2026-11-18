@@ -1,0 +1,649 @@
+/* Cart Sidebar Styles */
+.cart-main {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  background: white;
+  overflow: hidden;
+}
+
+.cart-details {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* Free Shipping Bar */
+.cart-free-shipping-bar {
+  background: #f5f5f5;
+  padding: 10px 20px;
+  border-bottom: 1px solid #e5e5e5;
+  flex-shrink: 0;
+}
+
+.cart-free-shipping-text {
+  font-family: 'Neue Haas Grotesk', sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+  color: #666;
+  letter-spacing: 0.02em;
+  display: block;
+  text-align: center;
+}
+
+/* Empty Cart State */
+.cart-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  text-align: center;
+  height: 100%;
+  width: 100%;
+}
+
+.cart-empty-message {
+  font-family: 'Neue Haas Grotesk', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: #666666;
+  margin: 0 0 24px 0;
+}
+
+.cart-empty-button {
+  display: inline-block;
+  padding: 14px 32px;
+  background: #000000;
+  color: #ffffff;
+  font-family: 'Neue Haas Grotesk', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.cart-empty-button:hover {
+  background: #333333;
+  opacity: 1;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .cart-empty {
+    padding: 20px;
+    height: calc(100vh - 120px);
+  }
+}
+
+/* Cart Items Container */
+.cart-items-container {
+  flex: 1 1 0;
+  /* Native iOS scroll */
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  padding: 0 20px 12px;
+  border-bottom: 1px solid #e5e5e5;
+  min-height: 0;
+}
+
+.cart-items-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Remove all underlines in cart */
+.cart-main a,
+.cart-main button {
+  text-decoration: none !important;
+}
+
+.cart-main a:hover,
+.cart-main button:hover {
+  text-decoration: none !important;
+}
+
+/* Cart Line Item */
+.cart-line-item {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.cart-line-item:last-child {
+  border-bottom: none;
+}
+
+.cart-line-item:first-child {
+  padding-top: 16px;
+}
+
+.cart-line-content {
+  display: flex;
+  gap: 14px;
+}
+
+.cart-line-image {
+  flex-shrink: 0;
+  width: 72px;
+  height: 90px;
+  background: #f5f5f5;
+  overflow: hidden;
+}
+
+.cart-line-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cart-line-details {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.cart-line-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cart-line-title {
+  font-family: 'Neue Haas Grotesk', sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  color: #000;
+  text-decoration: none;
+  line-height: 1.4;
+}
+
+.cart-line-title:hover {
+  text-decoration: underline;
+}
+
+.cart-line-options {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.cart-line-option {
+  font-family: 'Neue Haas Grotesk', sans-serif;
+  font-size: 11px;
+  color: #999;
+  letter-spacing: 0.01em;
+}
+
+.cart-line-price {
+  font-family: 'Neue Haas Grotesk', sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  color: #000;
+  white-space: nowrap;
+}
+
+/* Cart Line Actions */
+.cart-line-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 86px;
+}
+
+.cart-line-quantity {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #e0e0e0;
+  padding: 2px;
+}
+
+.cart-quantity-btn {
+  width: 26px;
+  height: 26px;
+  border: none;
+  background: white;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000;
+  transition: background 0.2s;
+  font-family: 'Neue Haas Grotesk', sans-serif;
+}
+
+.cart-quantity-btn:hover:not(:disabled) {
+  background: #f5f5f5;
+}
+
+.cart-quantity-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.cart-quantity-value {
+  min-width: 20px;
+  text-align: center;
+  font-family: 'Neue Haas Grotesk', sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+}
+
+.cart-remove-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  color: #ccc;
+  padding: 4px 6px;
+  transition: color 0.2s;
+  font-family: 'Neue Haas Grotesk', sans-serif;
+}
+
+.cart-remove-btn:hover:not(:disabled) {
+  color: #000;
+}
+
+.cart-remove-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* ===================================
+   OTHERS ALSO BOUGHT — Horizontal Scroll
+   =================================== */
+.cart-recommendations {
+  padding: 16px 20px;
+  border-bottom: 1px solid #e5e5e5;
+  flex-shrink: 0;
+}
+
+.cart-recommendations-title {
+  font-family: 'Neue Haas Grotesk', sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin: 0;
+  color: #000;
+}
+
+.cart-recommendations-toggle {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 0 12px 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  text-align: left;
+}
+
+.cart-recommendations-arrow {
+  font-family: var(--font-body);
+  font-size: 18px;
+  color: #666;
+  transition: transform 0.3s ease;
+  line-height: 1;
+}
+
+.cart-recommendations-arrow.open {
+  transform: rotate(90deg);
+}
+
+/* Horizontal scroll row */
+.cart-recommendations-scroll {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  /* Allow touch to pan horizontally */
+  touch-action: pan-x;
+  scrollbar-width: none;
+  padding-bottom: 4px;
+  cursor: grab;
+}
+
+.cart-recommendations-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* Individual recommendation card */
+.cart-rec-item {
+  flex: 0 0 100px;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.cart-rec-item:hover {
+  opacity: 0.8;
+}
+
+.cart-rec-image {
+  width: 100px;
+  height: 125px;
+  background: #f5f5f5;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.cart-rec-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.cart-rec-image-placeholder {
+  width: 100%;
+  height: 100%;
+  background: #ebebeb;
+}
+
+.cart-rec-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0 0;
+}
+
+.cart-rec-price {
+  font-family: 'Neue Haas Grotesk', sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  color: #000;
+}
+
+.cart-rec-add {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 2px;
+  color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s;
+}
+
+.cart-rec-add:hover {
+  opacity: 0.6;
+}
+
+/* Cart Summary */
+.cart-summary-aside {
+  padding: 16px 20px;
+  background: white;
+  flex-shrink: 0;
+}
+
+.cart-summary-page {
+  padding: 20px;
+  background: white;
+}
+
+/* Shipping Toggle */
+.cart-shipping-toggle {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border: none;
+  border-bottom: 1px solid #e5e5e5;
+  background: none;
+  cursor: pointer;
+  font-family: 'Neue Haas Grotesk', sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  text-align: left;
+  color: #000;
+}
+
+.cart-shipping-arrow {
+  font-size: 18px;
+  color: #666;
+  transition: transform 0.3s ease;
+}
+
+.cart-shipping-arrow.open {
+  transform: rotate(90deg);
+}
+
+.cart-shipping-content {
+  padding: 12px 0;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.cart-shipping-content p {
+  font-family: 'Neue Haas Grotesk', sans-serif;
+  font-size: 11px;
+  color: #666666;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Subtotal Row */
+.cart-subtotal-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0 6px 0;
+  font-family: 'Neue Haas Grotesk', sans-serif;
+  font-size: 13px;
+}
+
+.cart-subtotal-label {
+  color: #666;
+  font-weight: 400;
+}
+
+.cart-subtotal-amount {
+  font-weight: 400;
+  color: #000;
+}
+
+/* Discount Row */
+.cart-discount-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+  font-family: 'Neue Haas Grotesk', sans-serif;
+  font-size: 13px;
+}
+
+.cart-discount-label {
+  color: #666;
+}
+
+.cart-discount-amount {
+  font-weight: 400;
+  color: #e74c3c;
+}
+
+.cart-tax-note {
+  font-family: 'Neue Haas Grotesk', sans-serif;
+  font-size: 10px;
+  color: #999;
+  margin: 0 0 12px 0;
+}
+
+/* Total Row */
+.cart-total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-top: 1px solid #e0e0e0;
+  border-bottom: 1px solid #e0e0e0;
+  margin-bottom: 14px;
+}
+
+.cart-total-label {
+  font-family: 'Neue Haas Grotesk', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.cart-total-amount {
+  font-family: 'Neue Haas Grotesk', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: #000;
+}
+
+/* Checkout Button */
+.cart-checkout-actions {
+  margin-bottom: 12px;
+}
+
+.cart-checkout-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 15px 16px;
+  background: #000;
+  color: white;
+  text-decoration: none;
+  font-family: 'Neue Haas Grotesk', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.cart-checkout-button:hover {
+  background: #222;
+}
+
+.cart-checkout-lock {
+  font-size: 14px;
+}
+
+/* Payment Icons */
+.cart-payment-icons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  padding-top: 10px;
+}
+
+.payment-icon {
+  font-family: 'Neue Haas Grotesk', sans-serif;
+  font-size: 9px;
+  font-weight: 500;
+  padding: 3px 6px;
+  background: #f5f5f5;
+  border: 1px solid #e0e0e0;
+  color: #666;
+}
+
+/* Aside Overlay Styles */
+.overlay[data-type="cart"] aside {
+  width: 380px;
+  max-width: 90vw;
+}
+
+.overlay[data-type="cart"] aside header {
+  padding: 0 32px 0 10px;
+  /* Match desktop site header */
+  border-bottom: 1px solid #e0e0e0;
+  min-height: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@media (max-width: 768px) {
+  .overlay[data-type="cart"] aside header {
+    height: 63px;
+    min-height: 63px;
+    padding: 0 16px;
+    /* Match mobile site header */
+    padding-top: 0;
+  }
+
+  body.announcement-visible .overlay[data-type="cart"] aside header {
+    height: 99px;
+    padding-top: 36px;
+  }
+}
+
+@media (min-width: 769px) {
+  body.announcement-visible .overlay[data-type="cart"] aside header {
+    height: 82px;
+    padding-top: 36px;
+  }
+}
+
+.overlay[data-type="cart"] aside header h3 {
+  font-family: 'Neue Haas Grotesk', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.overlay[data-type="cart"] aside main {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .overlay[data-type="cart"] aside {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .cart-line-actions {
+    padding-left: 86px;
+  }
+}
+
+/* ===================================
+   MOBILE MENU SCROLL AREA
+   Native overflow scroll for touch devices
+   =================================== */
+.mobile-menu-scroll-area {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}

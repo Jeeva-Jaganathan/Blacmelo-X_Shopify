@@ -1,0 +1,961 @@
+/* ==========================================================================
+   BLACMELO CUSTOMER DASHBOARD - PREMIUM LUXURY REDESIGN (UPDATED)
+   ========================================================================== */
+
+/* Main Container Layout */
+.account-dashboard {
+  min-height: 100vh;
+  background: #ffffff;
+  width: 100%;
+  padding: 120px 24px 60px;
+  max-width: 1200px;
+  margin: 0 auto;
+  animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* absolute removal of hover underlines across all dashboard components */
+.account-dashboard a:not([class*="btn"]):not([class*="submit"]):not([target="_blank"]):hover,
+.dashboard-nav-link:hover,
+.dashboard-nav-link.active,
+.order-view-link:hover,
+.debug-exit-link:hover,
+.address-btn:hover {
+  text-decoration: none !important;
+  border-bottom: none !important;
+}
+
+/* Dev Debug Alert Banner */
+.debug-banner {
+  background: #000000;
+  color: #ffffff;
+  padding: 12px 20px;
+  margin-bottom: 40px;
+  border-radius: 0;
+  font-family: 'Neue Haas Grotesk', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.debug-banner-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.debug-badge {
+  background: #dc2626;
+  color: #ffffff;
+  padding: 3px 8px;
+  font-weight: 600;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+}
+
+.debug-message {
+  font-weight: 300;
+  opacity: 0.85;
+}
+
+.debug-exit-link {
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 500;
+  border-bottom: none;
+  padding-bottom: 2px;
+  transition: opacity 0.2s ease;
+}
+
+.debug-exit-link:hover {
+  opacity: 0.6;
+}
+
+/* Dashboard Banner/Header */
+.dashboard-header {
+  border-bottom: 1px solid #f0f0f0;
+  padding-bottom: 32px;
+  margin-bottom: 48px;
+}
+
+.dashboard-header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 24px;
+}
+
+.dashboard-heading {
+  font-family: 'Neue Haas Grotesk', sans-serif;
+  font-size: 26px;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  color: #000000;
+  margin: 0 0 8px 0;
+  text-transform: uppercase;
+}
+
+.dashboard-subheading {
+  font-family: 'Neue Haas Grotesk', sans-serif;
+  font-size: 13px;
+  font-weight: 300;
+  color: #888888;
+  margin: 0;
+  letter-spacing: 0.01em;
+}
+
+/* UNIFORM BUTTON SIZING SYSTEM */
+.dashboard-btn-primary,
+.form-submit,
+.order-search-buttons button,
+.address-form button,
+.address-btn,
+.addresses-grid form fieldset button,
+.account-order a[target="_blank"] {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 38px !important;
+  padding: 10px 24px !important;
+  font-family: 'Neue Haas Grotesk', sans-serif !important;
+  font-size: 10px !important;
+  font-weight: 500 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.15em !important;
+  border-radius: 0 !important;
+  min-width: 120px !important;
+  max-width: 180px !important;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  cursor: pointer !important;
+  text-decoration: none !important;
+  box-sizing: border-box !important;
+}
+
+.dashboard-btn-primary,
+.form-submit,
+.order-search-buttons button[type="submit"],
+.address-form button[type="submit"],
+.address-btn-edit {
+  background: #000000 !important;
+  color: #ffffff !important;
+  border: 1px solid #000000 !important;
+}
+
+.dashboard-btn-primary:hover,
+.form-submit:hover:not(:disabled),
+.order-search-buttons button[type="submit"]:hover,
+.address-form button[type="submit"]:hover,
+.address-btn-edit:hover {
+  background: transparent !important;
+  color: #000000 !important;
+}
+
+.order-search-buttons button[type="button"],
+.address-btn-delete,
+.address-btn-cancel {
+  background: transparent !important;
+  color: #666666 !important;
+  border: 1px solid #eaeaea !important;
+}
+
+.order-search-buttons button[type="button"]:hover,
+.address-btn-delete:hover,
+.address-btn-cancel:hover {
+  border-color: #000000 !important;
+  color: #000000 !important;
+}
+
+.address-btn-delete {
+  color: #dc2626 !important;
+  border-color: #dc2626 !important;
+}
+
+.address-btn-delete:hover {
+  background: #fff5f5 !important;
+  border-color: #dc2626 !important;
+}
+
+/* Grid Framework */
+.dashboard-container {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 56px;
+  align-items: start;
+}
+
+/* Sticky Luxury Sidebar */
+.dashboard-sidebar {
+  position: sticky;
+  top: 100px;
+}
+
+.dashboard-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.dashboard-nav-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.dashboard-nav-title {
+  font-family: 'Neue Haas Grotesk', sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: #999999;
+  margin: 0 0 16px 0;
+  padding-left: 12px;
+}
+
+.dashboard-nav-links {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dashboard-nav-link {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 12px;
+  text-decoration: none;
+  border-radius: 0;
+  color: #888888;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  border-left: 2px solid transparent;
+  background: transparent;
+  border-top: none;
+  border-right: none;
+  border-bottom: none;
+  text-align: left;
+  width: 100%;
+  cursor: pointer;
+}
+
+.dashboard-nav-link:hover {
+  color: #000000;
+  background: #fafafa;
+}
+
+.dashboard-nav-link.active {
+  color: #000000;
+  border-left: 2px solid #000000;
+  background: #fafafa;
+  font-weight: 500;
+}
+
+.dashboard-nav-icon {
+  color: currentColor;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.dashboard-nav-link-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dashboard-nav-link-title {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.dashboard-nav-link-desc {
+  font-size: 9px;
+  font-weight: 300;
+  color: #aaaaaa;
+}
+
+.dashboard-nav-divider {
+  height: 1px;
+  background: #eaeaea;
+  margin: 20px 0;
+}
+
+.logout-link {
+  color: #888888;
+}
+
+.logout-link:hover {
+  color: #dc2626;
+  background: #fff5f5;
+  border-left-color: #dc2626;
+}
+
+.dashboard-logout-form {
+  width: 100%;
+}
+
+/* Dashboard Panel Main */
+.dashboard-main {
+  width: 100%;
+  animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.account-section-header {
+  margin-bottom: 32px;
+}
+
+.account-section-title {
+  font-family: 'Neue Haas Grotesk', sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #000000;
+  margin: 0 0 6px 0;
+}
+
+.account-section-subtitle {
+  font-family: 'Neue Haas Grotesk', sans-serif;
+  font-size: 13px;
+  font-weight: 300;
+  color: #888888;
+  margin: 0;
+}
+
+/* Orders Receipt List styling */
+.orders-container {
+  width: 100%;
+}
+
+.order-card {
+  border: 1px solid #f0f0f0;
+  background: #ffffff;
+  border-radius: 0;
+  padding: 28px;
+  margin-bottom: 20px;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.order-card:hover {
+  border-color: #000000;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.025);
+}
+
+.order-card fieldset {
+  border: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.order-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #f8f8f8;
+  padding-bottom: 18px;
+  margin-bottom: 20px;
+}
+
+.order-number {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  color: #000000;
+  text-decoration: none;
+}
+
+.order-date {
+  font-size: 11px;
+  color: #aaaaaa;
+  font-weight: 300;
+  margin-top: 4px;
+}
+
+.order-total {
+  font-size: 14px;
+  font-weight: 500;
+  color: #000000;
+  letter-spacing: -0.01em;
+}
+
+.order-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  margin-bottom: 24px;
+}
+
+.order-detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.order-detail-label {
+  font-size: 9px;
+  font-weight: 500;
+  color: #aaaaaa;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+}
+
+.order-detail-value {
+  font-size: 12px;
+  font-weight: 300;
+  color: #333333;
+}
+
+.order-status {
+  font-size: 9px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  padding: 3px 10px;
+  border-radius: 0;
+  display: inline-block;
+  background: #f8f8f8;
+  color: #777777;
+}
+
+.order-status.paid {
+  background: oklch(0.97 0.01 140);
+  color: oklch(0.35 0.05 140);
+  font-weight: 600;
+}
+
+.order-status.fulfilled {
+  background: oklch(0.96 0.01 220);
+  color: oklch(0.35 0.05 220);
+  font-weight: 600;
+}
+
+.order-view-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: #000000;
+  border-bottom: 1px solid #000000;
+  padding-bottom: 4px;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  align-self: flex-start;
+  text-decoration: none;
+}
+
+.order-view-link:hover {
+  opacity: 0.5;
+  transform: translateX(3px);
+}
+
+/* Empty State Design */
+.empty-state {
+  text-align: center;
+  padding: 80px 24px;
+  border: 1px solid #f0f0f0;
+  background: #ffffff;
+}
+
+.empty-state-icon {
+  width: 44px;
+  height: 44px;
+  margin: 0 auto 28px;
+  color: #cccccc;
+  stroke-width: 1px;
+}
+
+.empty-state-title {
+  font-family: 'Neue Haas Grotesk', sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #000000;
+  margin: 0 0 10px 0;
+}
+
+.empty-state-text {
+  font-family: 'Neue Haas Grotesk', sans-serif;
+  font-size: 12px;
+  font-weight: 300;
+  color: #888888;
+  line-height: 1.8;
+  margin: 0 0 28px 0;
+}
+
+.empty-state-link {
+  display: inline-flex;
+  align-items: center;
+  padding: 12px 28px;
+  font-family: 'Neue Haas Grotesk', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: #ffffff;
+  background: #000000;
+  border: 1px solid #000000;
+  border-radius: 0;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  text-decoration: none;
+}
+
+.empty-state-link:hover {
+  background: transparent;
+  color: #000000;
+}
+
+/* Order Filters Styling */
+.order-search-form {
+  border: 1px solid #f0f0f0;
+  padding: 24px;
+  margin-bottom: 36px;
+  border-radius: 0;
+  background: #ffffff;
+}
+
+.order-search-fieldset {
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.order-search-legend {
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: #999999;
+  margin-bottom: 20px;
+}
+
+.order-search-inputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.order-search-input {
+  width: 100%;
+  padding: 12px 16px;
+  font-family: 'Neue Haas Grotesk', sans-serif;
+  font-size: 12px;
+  font-weight: 300;
+  border: 1px solid #eaeaea;
+  border-radius: 0;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  background: #ffffff;
+}
+
+.order-search-input:focus {
+  outline: none;
+  border-color: #000000;
+}
+
+.order-search-input::placeholder {
+  color: #cccccc;
+}
+
+/* Form layouts - utilizing spaces dynamically and minimizing vertical space */
+.form-row {
+  display: flex;
+  gap: 24px;
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+.form-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* Forms Redesign */
+.profile-container {
+  width: 100%;
+  max-width: 800px;
+}
+
+.profile-form {
+  border: 1px solid #f0f0f0;
+  padding: 24px;
+  border-radius: 0;
+  background: #ffffff;
+  width: 100%;
+}
+
+.profile-form legend {
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: #999999;
+  margin-bottom: 18px;
+  border-bottom: 1px solid #f8f8f8;
+  padding-bottom: 8px;
+  width: 100%;
+}
+
+.profile-form fieldset {
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  background: transparent !important;
+}
+
+.form-label {
+  font-size: 9px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: #000000;
+  margin-bottom: 1px;
+}
+
+.form-input {
+  width: 100%;
+  padding: 8px 12px;
+  font-family: 'Neue Haas Grotesk', sans-serif;
+  font-size: 11px;
+  font-weight: 300;
+  border: 1px solid #eaeaea;
+  border-radius: 0;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  background: #ffffff;
+  height: 38px;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #000000;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+}
+
+.form-error {
+  background: #fff5f5;
+  border: 1px solid #ffe8e8;
+  padding: 14px 20px;
+  margin-top: 20px;
+}
+
+.form-error mark {
+  background: transparent;
+  color: #dc2626;
+  font-family: 'Neue Haas Grotesk', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* Shipping Addresses Styling */
+.addresses-container {
+  width: 100%;
+}
+
+/* Override reset.css global form constraints */
+.account-dashboard form {
+  max-width: 100% !important;
+}
+
+.address-form {
+  border: 1px solid #f0f0f0;
+  padding: 24px;
+  background: #ffffff;
+  margin-bottom: 24px;
+  width: 100%;
+  max-width: 800px; /* Aligned with profile form max-width */
+}
+
+.address-form legend {
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: #999999;
+  margin-bottom: 18px;
+  border-bottom: 1px solid #f8f8f8;
+  padding-bottom: 8px;
+  width: 100%;
+}
+
+.address-form fieldset {
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  background: transparent !important;
+}
+
+/* Saved Addresses Static Card design */
+.addresses-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 32px;
+  margin-top: 32px;
+}
+
+.address-card-static,
+.address-card-edit-wrapper {
+  border: 1px solid #f0f0f0;
+  padding: 28px;
+  background: #ffffff;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 240px;
+}
+
+.address-card-edit-wrapper {
+  padding: 24px;
+  min-height: auto;
+}
+
+.address-card-edit-wrapper .address-form {
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.address-card-static:hover,
+.address-card-edit-wrapper:hover {
+  border-color: #000000;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.025);
+}
+
+.address-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #f8f8f8;
+  padding-bottom: 12px;
+  margin-bottom: 16px;
+}
+
+.address-card-title {
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  color: #aaaaaa;
+}
+
+.address-default-badge {
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  background: #000000;
+  color: #ffffff;
+  padding: 3px 8px;
+  text-transform: uppercase;
+}
+
+.address-content {
+  font-family: 'Neue Haas Grotesk', sans-serif;
+  font-size: 12px;
+  font-weight: 300;
+  color: #333333;
+  line-height: 1.8;
+  flex: 1;
+}
+
+/* Single Order Detail Route Styling */
+.account-order {
+  width: 100%;
+}
+
+.account-order h2 {
+  font-family: 'Neue Haas Grotesk', sans-serif;
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #000000;
+  margin: 0 0 8px 0;
+}
+
+.account-order p {
+  font-family: 'Neue Haas Grotesk', sans-serif;
+  font-size: 13px;
+  font-weight: 300;
+  color: #888888;
+  margin: 0 0 24px 0;
+}
+
+.account-order table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 40px;
+}
+
+.account-order th {
+  font-size: 9px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: #aaaaaa;
+  text-align: left;
+  padding: 16px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.account-order td {
+  padding: 20px 0;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 12px;
+  font-weight: 300;
+  color: #333333;
+}
+
+.account-order tr td div:has(img) {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.account-order tr td img {
+  border-radius: 0;
+  background: #fafafa;
+  object-fit: cover;
+}
+
+.account-order tr td div p {
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #000000;
+  margin: 0 0 4px 0;
+}
+
+.account-order tr td div small {
+  font-size: 10px;
+  color: #888888;
+  font-weight: 300;
+}
+
+.account-order tfoot th {
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #888888;
+  text-align: left;
+  padding: 12px 0;
+  border-bottom: none;
+}
+
+.account-order tfoot td {
+  text-align: right;
+  padding: 12px 0;
+  border-bottom: none;
+  font-size: 12px;
+  font-weight: 500;
+  color: #000000;
+}
+
+.account-order tfoot tr:last-child th,
+.account-order tfoot tr:last-child td {
+  border-top: 1px solid #eaeaea;
+  padding-top: 16px;
+  font-size: 14px;
+}
+
+.account-order address {
+  font-style: normal;
+  font-size: 12px;
+  font-weight: 300;
+  color: #333333;
+  line-height: 1.8;
+  border: 1px solid #f0f0f0;
+  padding: 24px;
+  background: #ffffff;
+  margin-bottom: 24px;
+}
+
+.account-order h3 {
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: #aaaaaa;
+  margin: 32px 0 16px 0;
+}
+
+/* Entry Micro-animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Tablet & Mobile Media Queries */
+@media (max-width: 900px) {
+  .account-dashboard {
+    padding: 100px 16px 40px;
+  }
+
+  .dashboard-container {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+
+  .dashboard-sidebar {
+    position: static;
+  }
+
+  .dashboard-header-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .dashboard-btn-primary {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .order-search-inputs {
+    grid-template-columns: 1fr;
+  }
+
+  .order-search-buttons button {
+    flex: 1;
+  }
+
+  .form-row {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .addresses-grid {
+    grid-template-columns: 1fr;
+  }
+}

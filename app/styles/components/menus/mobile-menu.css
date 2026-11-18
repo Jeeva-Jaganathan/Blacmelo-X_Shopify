@@ -1,0 +1,250 @@
+/**
+ * BLACMELO Mobile Menu — Full-screen slide-in panel
+ * Matches design reference: bold featured links, small gray category labels, regular category items
+ */
+
+/* ==========================================
+   SCROLL AREA — wraps all scrollable content
+   ========================================== */
+.mobile-menu-scroll-area {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  /* iOS native momentum scroll */
+  overscroll-behavior: contain;
+  /* Ensure touch events can propagate for scrolling */
+  touch-action: pan-y;
+}
+
+/* ==========================================
+   CONTENT WRAPPER
+   ========================================== */
+.mobile-menu-content {
+  padding: 16px 24px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  min-height: 100%;
+  background: #ffffff;
+}
+
+/* ==========================================
+   FEATURED / "PERMANENT" LINKS
+   Large bold text at top — e.g. "New Arrivals", "Bestsellers"
+   ========================================== */
+.mobile-menu-section.featured-section {
+  margin-bottom: 28px;
+}
+
+.mobile-menu-item.permanent-item {
+  font-family: 'Neue Haas Grotesk', sans-serif;
+  font-size: 17px;
+  font-weight: 500;
+  color: #000000;
+  letter-spacing: -0.02em;
+  text-decoration: none;
+  display: block;
+  padding: 5px 0;
+  line-height: 1.25;
+  transition: opacity 0.15s ease;
+}
+
+.mobile-menu-item.permanent-item:hover,
+.mobile-menu-item.permanent-item:active {
+  opacity: 0.5;
+}
+
+/* ==========================================
+   CATEGORY SECTION — with small label
+   ========================================== */
+.mobile-menu-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-bottom: 20px;
+}
+
+.mobile-menu-section.category-section {
+  margin-bottom: 20px;
+}
+
+/* Small uppercase gray label — "MAN", "WOMAN", "EXPLORE" */
+.mobile-menu-section-title {
+  font-family: 'Neue Haas Grotesk', sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #999999;
+  /* Gap specifically between the label and the first link below it */
+  margin: 0 0 8px 0;
+  padding: 0;
+}
+
+/* ==========================================
+   LINK LIST
+   ========================================== */
+.mobile-menu-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Standard category item — "Shop All Mens", "Clothing", etc. */
+.mobile-menu-item {
+  font-family: 'Neue Haas Grotesk', sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  color: #000000;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  /* Vertical rhythm: 8px top + 8px bottom gives clean rows without excess whitespace */
+  padding: 8px 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  transition: opacity 0.15s ease;
+}
+
+.mobile-menu-item:hover,
+.mobile-menu-item:active {
+  opacity: 0.5;
+}
+
+/* ==========================================
+   DIVIDER LINE
+   ========================================== */
+.mobile-menu-divider {
+  width: 100%;
+  height: 1px;
+  background: #ebebeb;
+  /* Top margin creates breathing room after the last link before the divider */
+  margin: 4px 0 20px 0;
+  flex-shrink: 0;
+}
+
+/* Section gap */
+.mobile-menu-section+.mobile-menu-section {
+  margin-top: 0;
+}
+
+/* ==========================================
+   EXPANDABLE ITEMS (+ button)
+   ========================================== */
+.mobile-menu-item-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.mobile-menu-item-wrapper .mobile-menu-item {
+  flex: 1;
+}
+
+.mobile-menu-expand-btn {
+  background: none;
+  border: none;
+  padding: 8px 0 8px 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #aaaaaa;
+  flex-shrink: 0;
+}
+
+.mobile-menu-expand-btn:hover {
+  color: #000000;
+}
+
+.mobile-menu-expand-btn .expand-icon {
+  transition: transform 0.2s ease;
+}
+
+.mobile-menu-expand-btn .expand-icon.expanded {
+  transform: rotate(45deg);
+}
+
+/* ==========================================
+   NESTED ITEMS — sub-collections
+   ========================================== */
+.mobile-menu-nested-list {
+  list-style: none;
+  margin: 0 0 4px 0;
+  padding: 0 0 0 16px;
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid #eeeeee;
+  overflow: hidden;
+  animation: slideDown 0.2s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    max-height: 0;
+  }
+
+  to {
+    opacity: 1;
+    max-height: 800px;
+  }
+}
+
+.mobile-menu-item.nested-item {
+  font-size: 14px;
+  font-weight: 400;
+  color: #555555;
+  padding: 6px 0;
+}
+
+.mobile-menu-item.nested-item:hover {
+  color: #000000;
+  opacity: 1;
+}
+
+/* ==========================================
+   FOOTER — locale picker
+   ========================================== */
+.mobile-menu-footer {
+  margin-top: auto;
+  padding-top: 24px;
+  border-top: 1px solid #ebebeb;
+}
+
+.mobile-menu-locale {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: 'Neue Haas Grotesk', sans-serif;
+  font-size: 13px;
+  color: #666666;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.locale-flag {
+  font-size: 1.1rem;
+}
+
+/* ==========================================
+   DESKTOP: hide mobile overlay trigger
+   ========================================== */
+@media (min-width: 769px) {
+  .mobile-menu-overlay {
+    display: none;
+  }
+}
